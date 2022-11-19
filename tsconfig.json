@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "outDir": "out",   // compiled js files go in this folder
+      "sourceMap": true     // for debugging
+
+    }
+  }
