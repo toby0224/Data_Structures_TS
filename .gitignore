@@ -1,0 +1,6 @@
+# ignore all files in out folder
+out/
+
+echo "out" >> .gitignore
+
+git rm --cached out

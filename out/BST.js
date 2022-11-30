@@ -40,14 +40,14 @@ var BST = /** @class */ (function () {
         while (currentNode.left) {
             currentNode = currentNode.left;
         }
-        return currentNode.value;
+        return currentNode.value; // most left node
     };
-    BST.prototype.mac = function () {
+    BST.prototype.max = function () {
         var currentNode = this.root;
         while (currentNode.right) {
             currentNode = currentNode.right;
         }
-        return currentNode.value;
+        return currentNode.value; // most right node
     };
     BST.prototype.constains = function (value) {
         var currentNode = this.root;
@@ -56,21 +56,91 @@ var BST = /** @class */ (function () {
                 return true;
             }
             else if (value < currentNode.value) {
-                currentNode = currentNode.left;
+                currentNode = currentNode.left; // move left
             }
             else if (value > currentNode.value) {
-                currentNode = currentNode.right;
+                currentNode = currentNode.right; // move right
             }
         }
         return false;
     };
+    //           15
+    //      3          36
+    //   2    12   28      39
+    // Depth first search - branch by branch
+    // Root, Left, Right -> 15, 3, 2, 12, 36, 28, 39
+    BST.prototype.dfsPreOrder = function () {
+        var dfs = [];
+        var preTraverse = function (rootNode) {
+            dfs.push(rootNode.value); // push current center node value
+            if (rootNode.left) {
+                preTraverse(rootNode.left); // keep traversing left until no more left node
+            }
+            if (rootNode.right) {
+                preTraverse(rootNode.right); // keep traversing right until no more left node
+            }
+        };
+        preTraverse(this.root);
+        return dfs;
+    };
+    // Left, Root, Right -> 2, 3, 12, 15, 28, 36, 39
+    BST.prototype.dfsInOrder = function () {
+        var dfs = [];
+        var inTraverse = function (rootNode) {
+            if (rootNode.left) {
+                inTraverse(rootNode.left); // keep traversing left until no more left node
+            }
+            dfs.push(rootNode.value); // push current center node value
+            if (rootNode.right) {
+                inTraverse(rootNode.right); // keep traversing right until no more right node
+            }
+        };
+        inTraverse(this.root);
+        return dfs;
+    };
+    // Left, Right, Root    -> 2, 12, 3, 28, 39, 36, 15
+    BST.prototype.dfsPostOrder = function () {
+        var dfs = [];
+        var postTraverse = function (rootNode) {
+            if (rootNode.left) {
+                postTraverse(rootNode.left); // keep traversing left until no more right node
+            }
+            if (rootNode.right) {
+                postTraverse(rootNode.right); // keep traversing right until no more right node
+            }
+            dfs.push(rootNode.value); // push current center node value
+        };
+        postTraverse(this.root);
+        return dfs;
+    };
+    // Breadth first seach - level by level
+    // use a queue  -> 15, 3, 36, 2, 12, 28, 39
+    BST.prototype.bfs = function () {
+        var bfs = [];
+        var queue = [];
+        queue.push(this.root);
+        while (queue.length) {
+            var currentNode = queue.shift();
+            bfs.push(currentNode.value);
+            if (currentNode.left) {
+                queue.push(currentNode.left);
+            }
+            if (currentNode.right) {
+                queue.push(currentNode.right);
+            }
+        }
+        return bfs;
+    };
     return BST;
 }());
-var myBST = new BST(3);
+console.clear();
+var myBST = new BST(15);
+myBST.insertNode(3);
+myBST.insertNode(36);
 myBST.insertNode(2);
-myBST.insertNode(1);
-myBST.insertNode(4);
-myBST.insertNode(5);
-console.log(myBST.min());
-console.log(myBST.constains(6));
+myBST.insertNode(12);
+myBST.insertNode(28);
+myBST.insertNode(39);
+//console.log(myBST.root);
+console.log(myBST.bfs());
 //# sourceMappingURL=BST.js.map
